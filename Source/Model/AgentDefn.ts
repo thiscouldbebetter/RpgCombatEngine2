@@ -6,7 +6,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 	size: Coords;
 	killable: Killable;
 	visual: VisualBase;
-	actionsAvailable: AgentAction[];
+	actionDefnRoot: AgentActionDefn;
 
 	constructor
 	(
@@ -15,7 +15,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 		size: Coords,
 		killable: Killable,
 		visual: VisualBase,
-		actionsAvailable: AgentAction[]
+		actionDefnRoot: AgentActionDefn
 	)
 	{
 		this.name = name;
@@ -23,7 +23,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 		this.size = size;
 		this.killable = killable;
 		this.visual = visual;
-		this.actionsAvailable = actionsAvailable;
+		this.actionDefnRoot = actionDefnRoot;
 	}
 
 	static _instances: AgentDefn_Instances;
@@ -60,7 +60,17 @@ class AgentDefn_Instances
 		var agentSizeMedium = Coords.fromXY(32, 32);
 		var agentSizeLarge = Coords.fromXY(48, 48);
 
-		var actionsAvailableFight = [ AgentAction.Instances().Fight ];
+		var actionRootFight = new AgentActionDefn
+		(
+			"[root]",
+			null, // targetType
+			null, // select
+			// children
+			(uwpe: UniverseWorldPlaceEntities) =>
+				[
+					AgentActionDefn.Instances().Fight
+				]
+		);
 
 		this.Player_Mage = new AgentDefn
 		(
@@ -78,7 +88,7 @@ class AgentDefn_Instances
 				),
 				agentSizePlayer
 			),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 		this.Player_Priest = new AgentDefn
@@ -97,7 +107,7 @@ class AgentDefn_Instances
 				),
 				agentSizePlayer
 			),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 		this.Player_Rogue = new AgentDefn
@@ -116,7 +126,7 @@ class AgentDefn_Instances
 				),
 				agentSizePlayer
 			),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 		this.Player_Warrior = new AgentDefn
@@ -135,7 +145,7 @@ class AgentDefn_Instances
 				),
 				agentSizePlayer
 			),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 		// Enemies.
@@ -147,7 +157,7 @@ class AgentDefn_Instances
 			agentSizeMedium,
 			Killable.fromIntegrityMax(10),
 			new VisualImageFromLibrary("Agents_Goblin"),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 		this.Troll = new AgentDefn
@@ -157,7 +167,7 @@ class AgentDefn_Instances
 			agentSizeLarge,
 			Killable.fromIntegrityMax(20),
 			new VisualImageFromLibrary("Agents_Troll"),
-			actionsAvailableFight
+			actionRootFight
 		);
 
 	}

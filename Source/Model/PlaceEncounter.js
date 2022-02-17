@@ -5,11 +5,15 @@ class PlaceEncounter extends Place {
         Coords.fromXY(400, 300), // size
         // entities
         [
-            new UserInputListener(),
-        ].concat(partyPlayer.agents).concat(partyEnemy.agents));
+            new UserInputListener()
+        ].concat(partyPlayer.agents).concat(partyEnemy.agents).concat([
+            new Cursor(uwpe => uwpe.place.agentActing),
+            new Cursor(uwpe => uwpe.place.agentToTarget)
+        ]));
         this.partyPlayer = partyPlayer;
         this.partyEnemy = partyEnemy;
-        this.agentCurrent = this.partyPlayer.agents[0]; // todo
+        this.agentActing = this.partyPlayer.agents[0]; // todo
+        this.agentToTarget = null;
     }
     static defnBuild() {
         var actionDisplayRecorderStartStop = DisplayRecorder.actionStartStop();
@@ -46,22 +50,31 @@ class PlaceEncounter extends Place {
         }
     }
     toControl(universe, world) {
-        var placeEncounter = this;
-        var listPartyEnemy = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(0, 0), // pos
-        Coords.fromXY(100, 100), // size
-        DataBinding.fromContextAndGet(placeEncounter, (c) => c.partyEnemy.agents), DataBinding.fromGet(x => x.toString()));
-        var listActionsPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(200, 0), // pos
-        Coords.fromXY(100, 100), // size
-        DataBinding.fromContextAndGet(placeEncounter, (c) => c.agentCurrent.actionsAvailable()), DataBinding.fromGet(x => x.name));
-        var listPartyPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(300, 0), // pos
-        Coords.fromXY(100, 100), // size
-        DataBinding.fromContextAndGet(placeEncounter, (c) => c.partyPlayer.agents), DataBinding.fromGet(x => x.toString()));
+        var uwpe = new UniverseWorldPlaceEntities(universe, world, this, null, null);
+        var listSize = Coords.fromXY(100, 90); // size
+        var labelEnemies = ControlLabel.fromPosAndTextString(Coords.fromXY(0, 0), "Enemies:");
+        var listPartyEnemy = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(0, 10), // pos
+        listSize, DataBinding.fromContextAndGet(uwpe, (c) => c.place.partyEnemy.agents), DataBinding.fromGet(x => x.toString()));
+        listPartyEnemy.bindingForIsEnabled = DataBinding.fromFalse();
+        var labelActions = ControlLabel.fromPosAndTextString(Coords.fromXY(200, 0), "Actions:");
+        var listActionsPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(200, 10), // pos
+        listSize, DataBinding.fromContextAndGet(uwpe, (c) => c.place.agentActing.actionDefnsAvailable(uwpe)), DataBinding.fromGet(x => x.name));
+        listActionsPlayer.confirm = (universe) => {
+            alert("todo");
+        };
+        var labelParty = ControlLabel.fromPosAndTextString(Coords.fromXY(300, 0), "Party:");
+        var listPartyPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(300, 10), // pos
+        listSize, DataBinding.fromContextAndGet(uwpe, (c) => c.place.partyPlayer.agents), DataBinding.fromGet(x => x.toString()));
+        listPartyPlayer.bindingForIsEnabled = DataBinding.fromFalse();
         var returnValue = ControlContainer.from4("containerEncounter", Coords.fromXY(0, 200), // pos
         Coords.fromXY(400, 100), // size
         // children
         [
+            labelEnemies,
             listPartyEnemy,
+            labelActions,
             listActionsPlayer,
+            labelParty,
             listPartyPlayer
         ]);
         return returnValue;

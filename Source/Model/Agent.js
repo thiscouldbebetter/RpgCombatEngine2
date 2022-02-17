@@ -2,14 +2,20 @@
 class Agent extends Entity {
     constructor(name, defn, pos) {
         super(name, [
+            Actor.default(),
             defn,
             Drawable.fromVisual(defn.visual),
             defn.killable.clone(),
             Locatable.fromPos(pos)
         ]);
     }
-    actionsAvailable() {
-        return this.defn().actionsAvailable;
+    actionDefnsAvailable(uwpe) {
+        if (this.actionDefnSelected == null) {
+            var defn = this.defn();
+            this.actionDefnSelected = defn.actionDefnRoot;
+        }
+        var returnActionDefns = this.actionDefnSelected.children(uwpe);
+        return returnActionDefns;
     }
     toString() {
         var killable = this.killable();

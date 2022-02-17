@@ -40,6 +40,7 @@ var Display2D = gf.Display2D;
 var DisplayRecorder = gf.DisplayRecorder;
 var VenueFader = gf.VenueFader;
 var VenueLayered = gf.VenueLayered;
+var VisualPolygon = gf.VisualPolygon;
 var VisualCircle = gf.VisualCircle;
 var VisualGroup = gf.VisualGroup;
 var VisualImageFromLibrary = gf.VisualImageFromLibrary;
@@ -59,7 +60,6 @@ var Orientation = gf.Orientation;
 var Polar = gf.Polar;
 var RangeExtent = gf.RangeExtent;
 var Rotation = gf.Rotation;
-// Geometry - Constraints.
 // Geometry - Network.
 var Network = gf.Network;
 // Geometry - Shapes.

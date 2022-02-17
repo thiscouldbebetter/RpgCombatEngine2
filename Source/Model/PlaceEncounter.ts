@@ -4,7 +4,8 @@ class PlaceEncounter extends Place
 	partyPlayer: Party;
 	partyEnemy: Party;
 
-	agentCurrent: Agent;
+	agentActing: Agent;
+	agentToTarget: Agent;
 
 	constructor
 	(
@@ -21,20 +22,34 @@ class PlaceEncounter extends Place
 			Coords.fromXY(400, 300), // size
 			 // entities
 			[
-				new UserInputListener(),
+				new UserInputListener()
 			].concat
 			(
 				partyPlayer.agents
 			).concat
 			(
 				partyEnemy.agents
+			).concat
+			(
+				[
+					new Cursor
+					(
+						uwpe => (uwpe.place as PlaceEncounter).agentActing
+					),
+
+					new Cursor
+					(
+						uwpe => (uwpe.place as PlaceEncounter).agentToTarget
+					)
+				]
 			)
 		);
 
 		this.partyPlayer = partyPlayer;
 		this.partyEnemy = partyEnemy;
 
-		this.agentCurrent = this.partyPlayer.agents[0]; // todo
+		this.agentActing = this.partyPlayer.agents[0]; // todo
+		this.agentToTarget = null;
 	}
 
 	static defnBuild(): PlaceDefn
@@ -104,46 +119,78 @@ class PlaceEncounter extends Place
 
 	toControl(universe: Universe, world: World): ControlBase
 	{
-		var placeEncounter = this;
+		var uwpe = new UniverseWorldPlaceEntities
+		(
+			universe, world, this, null, null
+		);
+
+		var listSize = Coords.fromXY(100, 90); // size
+
+		var labelEnemies = ControlLabel.fromPosAndTextString
+		(
+			Coords.fromXY(0, 0), "Enemies:"
+		);
 
 		var listPartyEnemy = 
 			ControlList.fromPosSizeItemsAndBindingForItemText
 			(
-				Coords.fromXY(0, 0), // pos
-				Coords.fromXY(100, 100), // size
+				Coords.fromXY(0, 10), // pos
+				listSize,
 				DataBinding.fromContextAndGet
 				(
-					placeEncounter,
-					(c: PlaceEncounter) => c.partyEnemy.agents
+					uwpe,
+					(c: UniverseWorldPlaceEntities) =>
+						(c.place as PlaceEncounter).partyEnemy.agents
 				),
 				DataBinding.fromGet(x => x.toString())
 			);
+
+		listPartyEnemy.bindingForIsEnabled = DataBinding.fromFalse();
+
+		var labelActions = ControlLabel.fromPosAndTextString
+		(
+			Coords.fromXY(200, 0), "Actions:"
+		);
 
 		var listActionsPlayer = 
 			ControlList.fromPosSizeItemsAndBindingForItemText
 			(
-				Coords.fromXY(200, 0), // pos
-				Coords.fromXY(100, 100), // size
+				Coords.fromXY(200, 10), // pos
+				listSize,
 				DataBinding.fromContextAndGet
 				(
-					placeEncounter,
-					(c: PlaceEncounter) => c.agentCurrent.actionsAvailable()
+					uwpe,
+					(c: UniverseWorldPlaceEntities) =>
+						(c.place as PlaceEncounter).agentActing.actionDefnsAvailable(uwpe)
 				),
 				DataBinding.fromGet(x => x.name)
 			);
 
+		listActionsPlayer.confirm = (universe: Universe) =>
+		{
+			alert("todo");
+		};
+
+		var labelParty = ControlLabel.fromPosAndTextString
+		(
+			Coords.fromXY(300, 0), "Party:"
+		);
+
 		var listPartyPlayer = 
 			ControlList.fromPosSizeItemsAndBindingForItemText
 			(
-				Coords.fromXY(300, 0), // pos
-				Coords.fromXY(100, 100), // size
+				Coords.fromXY(300, 10), // pos
+				listSize,
 				DataBinding.fromContextAndGet
 				(
-					placeEncounter,
-					(c: PlaceEncounter) => c.partyPlayer.agents
+					uwpe,
+					(c: UniverseWorldPlaceEntities) =>
+						(c.place as PlaceEncounter).partyPlayer.agents
 				),
 				DataBinding.fromGet(x => x.toString())
 			);
+
+		listPartyPlayer.bindingForIsEnabled = DataBinding.fromFalse();
 
 		var returnValue = ControlContainer.from4
 		(
@@ -152,8 +199,13 @@ class PlaceEncounter extends Place
 			Coords.fromXY(400, 100), // size
 			// children
 			[
+				labelEnemies,
 				listPartyEnemy,
+
+				labelActions,
 				listActionsPlayer,
+
+				labelParty,
 				listPartyPlayer
 			]
 		);

@@ -55,8 +55,23 @@ class WorldExtended extends World
 							(
 								null, // name
 								AgentDefn.Instances().Goblin,
-								Coords.fromXY(100, 100)
+								Coords.fromXY(150, 67)
+							),
+
+							new Agent
+							(
+								null, // name
+								AgentDefn.Instances().Goblin,
+								Coords.fromXY(150, 134)
+							),
+
+							new Agent
+							(
+								null, // name
+								AgentDefn.Instances().Troll,
+								Coords.fromXY(50, 100)
 							)
+
 						]
 					)
 				)

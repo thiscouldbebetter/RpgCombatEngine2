@@ -49,6 +49,7 @@ import Display2D = gf.Display2D;
 import DisplayRecorder = gf.DisplayRecorder;
 import VenueFader = gf.VenueFader;
 import VenueLayered = gf.VenueLayered;
+import VisualPolygon = gf.VisualPolygon;
 import Visual = gf.Visual;
 
 // Display - Visuals.
@@ -77,6 +78,7 @@ import RangeExtent = gf.RangeExtent;
 import Rotation = gf.Rotation;
 
 // Geometry - Constraints.
+import Constraint = gf.Constraint;
 
 // Geometry - Network.
 import Network = gf.Network;

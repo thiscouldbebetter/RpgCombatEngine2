@@ -9,7 +9,11 @@ class WorldExtended extends World {
                 new Agent("Mage", AgentDefn.Instances().Player_Mage, Coords.fromXY(350, 160))
             ]), new Party("Enemy", [
                 new Agent(null, // name
-                AgentDefn.Instances().Goblin, Coords.fromXY(100, 100))
+                AgentDefn.Instances().Goblin, Coords.fromXY(150, 67)),
+                new Agent(null, // name
+                AgentDefn.Instances().Goblin, Coords.fromXY(150, 134)),
+                new Agent(null, // name
+                AgentDefn.Instances().Troll, Coords.fromXY(50, 100))
             ]))
         ]);
     }

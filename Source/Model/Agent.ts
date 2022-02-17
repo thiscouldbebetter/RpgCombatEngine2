@@ -1,6 +1,8 @@
 
 class Agent extends Entity
 {
+	actionDefnSelected: AgentActionDefn;
+
 	constructor
 	(
 		name: string,
@@ -12,6 +14,7 @@ class Agent extends Entity
 		(
 			name,
 			[
+				Actor.default(),
 				defn,
 				Drawable.fromVisual(defn.visual),
 				defn.killable.clone(),
@@ -20,9 +23,17 @@ class Agent extends Entity
 		);
 	}
 
-	actionsAvailable(): AgentAction[]
+	actionDefnsAvailable(uwpe: UniverseWorldPlaceEntities): AgentActionDefn[]
 	{
-		return this.defn().actionsAvailable;
+		if (this.actionDefnSelected == null)
+		{
+			var defn = this.defn();
+			this.actionDefnSelected = defn.actionDefnRoot;
+		}
+
+		var returnActionDefns = this.actionDefnSelected.children(uwpe);
+
+		return returnActionDefns;
 	}
 
 	toString(): string
