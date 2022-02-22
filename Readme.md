@@ -1,7 +1,7 @@
 RPG Combat Engine
 =================
 
-This repository implements a combat engine for a Japanese-style role-playing game in TypeScript using the This Could Be Better Game Framework.
+This repository partially implements a combat engine for a Japanese-style role-playing game in TypeScript using the This Could Be Better Game Framework.
 
 
 Building
