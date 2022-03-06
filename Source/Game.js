@@ -17,10 +17,9 @@ class Game {
             // Wrap.
             new Coords(200, 150, 1),
         ];
-        var display = new Display2D(displaySizesAvailable, "Font", // fontName
-        10, // fontHeightInPixels
-        Color.byName("Gray"), Color.byName("White"), // colorFore, colorBack
-        null);
+        var display = new Display2D(displaySizesAvailable, FontNameAndHeight.default(), Color.byName("Gray"), Color.byName("White"), // colorFore, colorBack
+        null // ?
+        );
         var timerHelper = new TimerHelper(20);
         var controlBuilder = ControlBuilder.default();
         var worldCreator = WorldCreator.fromWorldCreate(() => new WorldExtended());

@@ -60,16 +60,23 @@ class AgentDefn_Instances
 		var agentSizeMedium = Coords.fromXY(32, 32);
 		var agentSizeLarge = Coords.fromXY(48, 48);
 
-		var actionRootFight = new AgentActionDefn
+		var actionDefns = AgentActionDefn.Instances();
+
+		var actionRootCommon = new AgentActionDefn
 		(
 			"[root]",
 			null, // targetType
 			null, // select
 			// children
 			(uwpe: UniverseWorldPlaceEntities) =>
-				[
-					AgentActionDefn.Instances().Fight
-				]
+			[
+				actionDefns.Fight,
+				actionDefns.Defend,
+				actionDefns.Item,
+				actionDefns.Wait,
+				actionDefns.Withdraw
+
+			]
 		);
 
 		this.Player_Mage = new AgentDefn
@@ -80,15 +87,15 @@ class AgentDefn_Instances
 			Killable.fromIntegrityMax(10),
 			new VisualImageScaledPartial
 			(
-				new VisualImageFromLibrary("Agents_Agents"),
 				Box.fromMinAndSize
 				(
 					agentSizePlayer.clone().multiply(Coords.fromXY(0, 0)),
 					agentSizePlayer
 				),
-				agentSizePlayer
+				agentSizePlayer,
+				new VisualImageFromLibrary("Agents_Agents")
 			),
-			actionRootFight
+			actionRootCommon
 		);
 
 		this.Player_Priest = new AgentDefn
@@ -99,15 +106,15 @@ class AgentDefn_Instances
 			Killable.fromIntegrityMax(15),
 			new VisualImageScaledPartial
 			(
-				new VisualImageFromLibrary("Agents_Agents"),
 				Box.fromMinAndSize
 				(
 					agentSizePlayer.clone().multiply(Coords.fromXY(1, 0)),
 					agentSizePlayer
 				),
-				agentSizePlayer
+				agentSizePlayer,
+				new VisualImageFromLibrary("Agents_Agents")
 			),
-			actionRootFight
+			actionRootCommon
 		);
 
 		this.Player_Rogue = new AgentDefn
@@ -118,15 +125,15 @@ class AgentDefn_Instances
 			Killable.fromIntegrityMax(15),
 			new VisualImageScaledPartial
 			(
-				new VisualImageFromLibrary("Agents_Agents"),
 				Box.fromMinAndSize
 				(
 					agentSizePlayer.clone().multiply(Coords.fromXY(3, 0)),
 					agentSizePlayer
 				),
-				agentSizePlayer
+				agentSizePlayer,
+				new VisualImageFromLibrary("Agents_Agents")
 			),
-			actionRootFight
+			actionRootCommon
 		);
 
 		this.Player_Warrior = new AgentDefn
@@ -137,15 +144,15 @@ class AgentDefn_Instances
 			Killable.fromIntegrityMax(20),
 			new VisualImageScaledPartial
 			(
-				new VisualImageFromLibrary("Agents_Agents"),
 				Box.fromMinAndSize
 				(
 					agentSizePlayer.clone().multiply(Coords.fromXY(2, 0)),
 					agentSizePlayer
 				),
-				agentSizePlayer
+				agentSizePlayer,
+				new VisualImageFromLibrary("Agents_Agents")
 			),
-			actionRootFight
+			actionRootCommon
 		);
 
 		// Enemies.
@@ -157,7 +164,7 @@ class AgentDefn_Instances
 			agentSizeMedium,
 			Killable.fromIntegrityMax(10),
 			new VisualImageFromLibrary("Agents_Goblin"),
-			actionRootFight
+			null // action
 		);
 
 		this.Troll = new AgentDefn
@@ -167,7 +174,7 @@ class AgentDefn_Instances
 			agentSizeLarge,
 			Killable.fromIntegrityMax(20),
 			new VisualImageFromLibrary("Agents_Troll"),
-			actionRootFight
+			null // action
 		);
 
 	}

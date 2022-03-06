@@ -71,7 +71,7 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Defend");
 			},
 			null // childrenGet
 		);
@@ -83,7 +83,7 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Fight");
 			},
 			null // childrenGet
 		);
@@ -95,11 +95,11 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Item");
 			},
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Item");
 			}
 		);
 
@@ -110,11 +110,11 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Magic");
 			},
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Magic");
 			}
 		);
 
@@ -125,7 +125,7 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Wait");
 			},
 			null // childrenGet
 		);

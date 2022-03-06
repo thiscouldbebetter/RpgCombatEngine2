@@ -17,11 +17,24 @@ class Agent extends Entity {
         var returnActionDefns = this.actionDefnSelected.children(uwpe);
         return returnActionDefns;
     }
-    toString() {
+    toStringStatus() {
         var killable = this.killable();
         var defn = this.defn();
         var name = (defn.hasPersonalName ? this.name : defn.name);
         var returnValue = name + ": " + killable.integrityCurrentOverMax();
+        return returnValue;
+    }
+    toStringAction() {
+        var returnValue = "";
+        if (this.actionCurrent == null) {
+            returnValue = this.name + " ready.  Choose an action.";
+        }
+        else {
+            var action = this.actionCurrent;
+            var actionDefn = action.defn;
+            var actionDefnName = actionDefn.name;
+            returnValue = this.name + " preparing to " + actionDefnName + ".  Choose a target.";
+        }
         return returnValue;
     }
     // Properties.

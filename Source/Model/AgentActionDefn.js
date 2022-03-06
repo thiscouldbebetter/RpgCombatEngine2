@@ -31,33 +31,33 @@ class AgentActionDefn_Instances {
         this.Defend = new AgentActionDefn("Defend", targetTypes.Ally, 
         // select
         (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Defend");
         }, null // childrenGet
         );
         this.Fight = new AgentActionDefn("Fight", targetTypes.Enemy, 
         // select
         (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Fight");
         }, null // childrenGet
         );
         this.Item = new AgentActionDefn("Item", null, // targetType
         // select
         (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Item");
         }, (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Item");
         });
         this.Magic = new AgentActionDefn("Magic", null, // targetType
         // select
         (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Magic");
         }, (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Magic");
         });
         this.Wait = new AgentActionDefn("Wait", targetTypes.None, 
         // select
         (uwpe) => {
-            throw new Error("todo");
+            throw new Error("todo - Wait");
         }, null // childrenGet
         );
         this.Withdraw = new AgentActionDefn("Withdraw", targetTypes.None, 

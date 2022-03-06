@@ -31,10 +31,9 @@ class Game
 		var display = new Display2D
 		(
 			displaySizesAvailable,
-			"Font", // fontName
-			10, // fontHeightInPixels
+			FontNameAndHeight.default(),
 			Color.byName("Gray"), Color.byName("White"), // colorFore, colorBack
-			null
+			null // ?
 		);
 
 		var timerHelper = new TimerHelper(20);
