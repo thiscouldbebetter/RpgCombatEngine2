@@ -13,7 +13,7 @@ class Agent extends Entity
 	{
 		super
 		(
-			name,
+			(name || defn.name),
 			[
 				Actor.default(),
 				defn,
@@ -22,6 +22,8 @@ class Agent extends Entity
 				Locatable.fromPos(pos)
 			]
 		);
+
+		this.actionCurrent = AgentAction.default();
 	}
 
 	actionDefnsAvailable
@@ -53,17 +55,36 @@ class Agent extends Entity
 	toStringAction(): string
 	{
 		var returnValue = "";
-		if (this.actionCurrent == null)
+
+		var action = this.actionCurrent;
+		var actionDefn = action.defn;
+
+		if (actionDefn == null)
 		{
 			returnValue = this.name + " ready.  Choose an action."
 		}
-		else
+		else 
 		{
-			var action = this.actionCurrent;
-			var actionDefn = action.defn;
+			var actionTarget = action.target;
 			var actionDefnName = actionDefn.name;
-			returnValue = this.name + " preparing to " + actionDefnName + ".  Choose a target.";
+			if (actionTarget == null)
+			{
+				returnValue =
+					this.name
+					+ " preparing to "
+					+ actionDefnName
+					+ ".  Choose a target.";
+			}
+			else
+			{
+				returnValue =
+					this.name
+					+ " attempting to "
+					+ actionDefnName + " "
+					+ actionTarget.name + ".";
+			}
 		}
+
 		return returnValue;
 	}
 

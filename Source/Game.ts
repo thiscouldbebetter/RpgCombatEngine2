@@ -74,9 +74,9 @@ class Game
 
 		var mediaFilePaths =
 		[
-			imageDirectoryPath + "Opening.png",
-			imageDirectoryPath + "Producer.png",
-			imageDirectoryPath + "Title.png",
+			imageDirectoryPath + "Titles/Opening.png",
+			imageDirectoryPath + "Titles/Producer.png",
+			imageDirectoryPath + "Titles/Title.png",
 
 			imageDirectoryPath + "Agents/Agents.png",
 			imageDirectoryPath + "Agents/Goblin.png",

@@ -1,14 +1,11 @@
 "use strict";
 class Cursor extends Entity {
-    constructor(agentToHighlightGet) {
-        var colors = Color.Instances();
+    constructor(color, agentToHighlightGet) {
         super(Cursor.name, [
             new Constrainable([
                 new Constraint_Cursor(agentToHighlightGet)
             ]),
-            Drawable.fromVisual(
-            //VisualPolygon.default(),
-            VisualPolygon.arrow(10, 10, 0, colors.Blue, colors.Cyan)),
+            Drawable.fromVisual(VisualPolygon.arrow(10, 10, 0, color, Color.Instances().Gray)),
             Locatable.fromPos(Coords.fromXY(100, 100))
         ]);
     }

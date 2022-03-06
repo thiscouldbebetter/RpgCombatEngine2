@@ -5,7 +5,6 @@ class PlaceEncounter extends Place
 	partyEnemy: Party;
 
 	agentActing: Agent;
-	agentToTarget: Agent;
 
 	cursorActor: Cursor;
 	cursorTarget: Cursor;
@@ -17,14 +16,18 @@ class PlaceEncounter extends Place
 		partyEnemy: Party
 	)
 	{
+		var colors = Color.Instances();
+
 		var cursorActor = new Cursor
 		(
+			colors.Blue,
 			uwpe => (uwpe.place as PlaceEncounter).agentActing
 		);
 
 		var cursorTarget = new Cursor
 		(
-			uwpe => (uwpe.place as PlaceEncounter).agentToTarget
+			colors.Red,
+			uwpe => (uwpe.place as PlaceEncounter).agentActing.actionCurrent.target
 		);
 
 		super
@@ -55,7 +58,6 @@ class PlaceEncounter extends Place
 		this.partyEnemy = partyEnemy;
 
 		this.agentActing = this.partyPlayer.agents[0]; // todo
-		this.agentToTarget = null;
 
 		this.cursorActor = cursorActor;
 		this.cursorTarget = cursorTarget;
@@ -126,6 +128,8 @@ class PlaceEncounter extends Place
 				venueControls.controlRoot = this._control;
 			}
 		}
+
+		super.updateForTimerTick(uwpe);
 	}
 
 	// Controls.
@@ -156,11 +160,43 @@ class PlaceEncounter extends Place
 					uwpe,
 					(c: UniverseWorldPlaceEntities) =>
 						(c.place as PlaceEncounter).partyEnemy.agents
-				),
+				), // items
 				DataBinding.fromGet(x => x.toStringStatus())
 			);
 
-		listPartyEnemy.bindingForIsEnabled = DataBinding.fromFalse();
+		//listPartyEnemy.bindingForIsEnabled = DataBinding.fromFalse();
+
+		listPartyEnemy.confirm = () =>
+		{
+			var world = universe.world as WorldExtended;
+			var encounter = world.placeCurrent as PlaceEncounter;
+			var agentActing = encounter.agentActing;
+			var action = agentActing.actionCurrent;
+			var actionDefn = action.defn;
+			if (actionDefn == null)
+			{
+				// Do nothing.
+			}
+			else
+			{
+				var agentToTarget = listPartyEnemy.itemSelected() as Agent;
+				var targetType = actionDefn.targetType;
+				if (targetType == null)
+				{
+					throw new Error("todo - targetType is null.");
+				}
+				else
+				{
+					var agentsTargetable = targetType.agentsTargetableGet(uwpe);
+					var isTargetTargetable =
+						(agentsTargetable.indexOf(agentToTarget) >= 0);
+					if (isTargetTargetable)
+					{
+						action.target = agentToTarget;
+					}
+				}
+			}
+		};
 
 		var labelActions = ControlLabel.fromPosAndTextString
 		(
@@ -178,7 +214,7 @@ class PlaceEncounter extends Place
 					(c: UniverseWorldPlaceEntities) =>
 						(c.place as PlaceEncounter).agentActing.actionDefnsAvailable(uwpe)
 				),
-				DataBinding.fromGet(x => x.name)
+				DataBinding.fromGet(x => x.name) // itemText
 			);
 
 		listActionsPlayer.confirm = () =>
@@ -186,15 +222,18 @@ class PlaceEncounter extends Place
 			var world = universe.world as WorldExtended;
 			var encounter = world.placeCurrent as PlaceEncounter;
 			var agent = encounter.agentActing;
-			var actionDefn = agent.actionDefnSelected;
-			agent.actionCurrent = new AgentAction(actionDefn);
-			var targetType = actionDefn.targetType;
-			var targetTypesAll = AgentActionTargetType.Instances();
-			if (targetType == targetTypesAll.Enemy) // hack
+			var actionDefnToSelect =
+				listActionsPlayer.itemSelected() as AgentActionDefn;
+			agent.actionCurrent.defn = actionDefnToSelect;
+			var targetType = actionDefnToSelect.targetType;
+			if (targetType == null)
+			{
+				throw new Error("todo - targetType is null");
+			}
+			else
 			{
 				// todo
 			}
-			this.cursorTarget.drawable().show();
 		};
 
 		var labelParty = ControlLabel.fromPosAndTextString
@@ -216,7 +255,12 @@ class PlaceEncounter extends Place
 				DataBinding.fromGet(x => x.toStringStatus())
 			);
 
-		listPartyPlayer.bindingForIsEnabled = DataBinding.fromFalse();
+		//listPartyPlayer.bindingForIsEnabled = DataBinding.fromFalse();
+
+		listPartyPlayer.confirm = () =>
+		{
+			alert("todo - listPartyPlayer.confirm");
+		};
 
 		var uwpe = new UniverseWorldPlaceEntities(universe, world, this, null, null);
 

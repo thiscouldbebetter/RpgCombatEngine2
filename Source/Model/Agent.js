@@ -1,13 +1,14 @@
 "use strict";
 class Agent extends Entity {
     constructor(name, defn, pos) {
-        super(name, [
+        super((name || defn.name), [
             Actor.default(),
             defn,
             Drawable.fromVisual(defn.visual),
             defn.killable.clone(),
             Locatable.fromPos(pos)
         ]);
+        this.actionCurrent = AgentAction.default();
     }
     actionDefnsAvailable(uwpe) {
         if (this.actionDefnSelected == null) {
@@ -26,14 +27,28 @@ class Agent extends Entity {
     }
     toStringAction() {
         var returnValue = "";
-        if (this.actionCurrent == null) {
+        var action = this.actionCurrent;
+        var actionDefn = action.defn;
+        if (actionDefn == null) {
             returnValue = this.name + " ready.  Choose an action.";
         }
         else {
-            var action = this.actionCurrent;
-            var actionDefn = action.defn;
+            var actionTarget = action.target;
             var actionDefnName = actionDefn.name;
-            returnValue = this.name + " preparing to " + actionDefnName + ".  Choose a target.";
+            if (actionTarget == null) {
+                returnValue =
+                    this.name
+                        + " preparing to "
+                        + actionDefnName
+                        + ".  Choose a target.";
+            }
+            else {
+                returnValue =
+                    this.name
+                        + " attempting to "
+                        + actionDefnName + " "
+                        + actionTarget.name + ".";
+            }
         }
         return returnValue;
     }

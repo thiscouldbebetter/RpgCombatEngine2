@@ -75,7 +75,6 @@ class AgentDefn_Instances
 				actionDefns.Item,
 				actionDefns.Wait,
 				actionDefns.Withdraw
-
 			]
 		);
 

@@ -30,7 +30,10 @@ class AgentActionTargetType_Instances {
             return null;
         });
         this.Enemy = new AgentActionTargetType("Enemy", (uwpe) => {
-            return null;
+            var placeEncounter = uwpe.place;
+            var partyEnemy = placeEncounter.partyEnemy;
+            var partyEnemyAgents = partyEnemy.agents;
+            return partyEnemyAgents;
         });
     }
 }

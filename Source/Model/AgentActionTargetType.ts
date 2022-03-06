@@ -82,7 +82,10 @@ class AgentActionTargetType_Instances
 			"Enemy",
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				return null;
+				var placeEncounter = uwpe.place as PlaceEncounter;
+				var partyEnemy = placeEncounter.partyEnemy;
+				var partyEnemyAgents = partyEnemy.agents;
+				return partyEnemyAgents;
 			}
 		);
 	}

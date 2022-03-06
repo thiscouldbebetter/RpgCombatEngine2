@@ -90,7 +90,7 @@ class AgentActionDefn_Instances
 
 		this.Item = new AgentActionDefn
 		(
-			"Item",
+			"Use Item",
 			null, // targetType
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>

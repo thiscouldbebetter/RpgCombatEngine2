@@ -3,11 +3,10 @@ class Cursor extends Entity
 {
 	constructor
 	(
+		color: Color,
 		agentToHighlightGet: (uwpe: UniverseWorldPlaceEntities) => Agent
 	)
 	{
-		var colors = Color.Instances();
-
 		super
 		(
 			Cursor.name,
@@ -18,8 +17,7 @@ class Cursor extends Entity
 				]),
 				Drawable.fromVisual
 				(
-					//VisualPolygon.default(),
-					VisualPolygon.arrow(10, 10, 0, colors.Blue, colors.Cyan)
+					VisualPolygon.arrow(10, 10, 0, color, Color.Instances().Gray)
 				),
 				Locatable.fromPos(Coords.fromXY(100, 100))
 			]

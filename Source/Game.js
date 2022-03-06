@@ -36,9 +36,9 @@ class Game {
         var textStringDirectoryPath = contentDirectoryPath + "Text/";
         var videoDirectoryPath = contentDirectoryPath + "Video/";
         var mediaFilePaths = [
-            imageDirectoryPath + "Opening.png",
-            imageDirectoryPath + "Producer.png",
-            imageDirectoryPath + "Title.png",
+            imageDirectoryPath + "Titles/Opening.png",
+            imageDirectoryPath + "Titles/Producer.png",
+            imageDirectoryPath + "Titles/Title.png",
             imageDirectoryPath + "Agents/Agents.png",
             imageDirectoryPath + "Agents/Goblin.png",
             imageDirectoryPath + "Agents/Troll.png",

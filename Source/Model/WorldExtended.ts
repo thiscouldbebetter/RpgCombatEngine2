@@ -3,6 +3,8 @@ class WorldExtended extends World
 {
 	constructor()
 	{
+		var agentDefns = AgentDefn.Instances();
+
 		var place = new PlaceEncounter
 		(
 			PlaceEncounter.name + "0",
@@ -13,28 +15,28 @@ class WorldExtended extends World
 					new Agent
 					(
 						"Warrior",
-						AgentDefn.Instances().Player_Warrior,
+						agentDefns.Player_Warrior,
 						Coords.fromXY(350, 40)
 					),
 
 					new Agent
 					(
 						"Rogue",
-						AgentDefn.Instances().Player_Rogue,
+						agentDefns.Player_Rogue,
 						Coords.fromXY(350, 80)
 					),
 
 					new Agent
 					(
 						"Priest",
-						AgentDefn.Instances().Player_Priest,
+						agentDefns.Player_Priest,
 						Coords.fromXY(350, 120)
 					),
 
 					new Agent
 					(
 						"Mage",
-						AgentDefn.Instances().Player_Mage,
+						agentDefns.Player_Mage,
 						Coords.fromXY(350, 160)
 					)
 
@@ -48,21 +50,21 @@ class WorldExtended extends World
 					new Agent
 					(
 						null, // name
-						AgentDefn.Instances().Goblin,
+						agentDefns.Goblin,
 						Coords.fromXY(150, 67)
 					),
 
 					new Agent
 					(
 						null, // name
-						AgentDefn.Instances().Goblin,
+						agentDefns.Goblin,
 						Coords.fromXY(150, 134)
 					),
 
 					new Agent
 					(
 						null, // name
-						AgentDefn.Instances().Troll,
+						agentDefns.Troll,
 						Coords.fromXY(50, 100)
 					)
 
@@ -90,6 +92,7 @@ class WorldExtended extends World
 		(
 			[], // actions
 			[
+				ActivityDefn.Instances().DoNothing,
 				UserInputListener.activityDefn()
 			],
 			[], // entityDefns

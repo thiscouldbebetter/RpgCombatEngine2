@@ -40,7 +40,7 @@ class AgentActionDefn_Instances {
             throw new Error("todo - Fight");
         }, null // childrenGet
         );
-        this.Item = new AgentActionDefn("Item", null, // targetType
+        this.Item = new AgentActionDefn("Use Item", null, // targetType
         // select
         (uwpe) => {
             throw new Error("todo - Item");
