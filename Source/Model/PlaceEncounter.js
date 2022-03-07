@@ -91,22 +91,14 @@ class PlaceEncounter extends Place {
             }
         };
         var labelActions = ControlLabel.fromPosAndTextString(Coords.fromXY(205, 0), "Actions:");
-        var listActionsPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(205, 15), // pos
-        listSize, DataBinding.fromContextAndGet(uwpe, (c) => c.place.agentActing.actionDefnsAvailable(uwpe)), DataBinding.fromGet(x => x.name) // itemText
-        );
+        var listActionsPlayerItems = DataBinding.fromContextAndGet(uwpe, (c) => c.place.agentActing.actionDefnsAvailable(uwpe));
+        var listActionsPlayerBindingForItemSelected = new DataBinding(uwpe, c => c.place.actionDefnSelected, (c, v) => c.place.actionDefnSelected = v);
+        var listActionsPlayer = ControlList.fromPosSizeItemsAndBindingsForItemTextAndSelected(Coords.fromXY(205, 15), // pos
+        listSize, listActionsPlayerItems, DataBinding.fromGet(x => x.name), // itemText
+        listActionsPlayerBindingForItemSelected);
         listActionsPlayer.confirm = () => {
-            var world = universe.world;
-            var encounter = world.placeCurrent;
-            var agent = encounter.agentActing;
             var actionDefnToSelect = listActionsPlayer.itemSelected();
-            agent.actionCurrent.defn = actionDefnToSelect;
-            var targetType = actionDefnToSelect.targetType;
-            if (targetType == null) {
-                throw new Error("todo - targetType is null");
-            }
-            else {
-                // todo
-            }
+            actionDefnToSelect.select(uwpe);
         };
         var labelParty = ControlLabel.fromPosAndTextString(Coords.fromXY(305, 0), "Party:");
         var listPartyPlayer = ControlList.fromPosSizeItemsAndBindingForItemText(Coords.fromXY(305, 15), // pos

@@ -4,32 +4,20 @@ class AgentActionDefn
 	name: string;
 	targetType: AgentActionTargetType;
 	_select: (uwpe: UniverseWorldPlaceEntities) => void;
-	_childrenGet: (uwpe: UniverseWorldPlaceEntities) => AgentActionDefn[];
+	children: AgentActionDefn[]
 
 	constructor
 	(
 		name: string,
 		targetType: AgentActionTargetType,
 		select: (uwpe: UniverseWorldPlaceEntities) => void,
-		childrenGet: (uwpe: UniverseWorldPlaceEntities) => AgentActionDefn[]
+		children: AgentActionDefn[]
 	)
 	{
 		this.name = name;
 		this.targetType = targetType;
 		this._select = select;
-		this._childrenGet = childrenGet;
-	}
-
-	children(uwpe: UniverseWorldPlaceEntities): AgentActionDefn[]
-	{
-		var returnChildren: AgentActionDefn[];
-
-		if (this._childrenGet != null)
-		{
-			returnChildren = this._childrenGet(uwpe);
-		}
-
-		return returnChildren;
+		this.children = children;
 	}
 
 	select(uwpe: UniverseWorldPlaceEntities): void
@@ -49,6 +37,31 @@ class AgentActionDefn
 		}
 		return AgentActionDefn._instances;
 	}
+
+	static selectChildren(uwpe: UniverseWorldPlaceEntities): void
+	{
+		throw new Error("todo - selectChildren()");
+	}
+
+	static selectTargetable(uwpe: UniverseWorldPlaceEntities): void
+	{
+		var universe = uwpe.universe;
+		var world = universe.world as WorldExtended;
+		var encounter = world.placeCurrent as PlaceEncounter;
+		var agent = encounter.agentActing;
+		var actionDefnToSelect = encounter.actionDefnSelected;
+		agent.actionCurrent.defn = actionDefnToSelect;
+		var targetType = actionDefnToSelect.targetType;
+		if (targetType == null)
+		{
+			throw new Error("todo - targetType is null");
+		}
+		else
+		{
+			// todo
+		}
+	}
+
 }
 
 class AgentActionDefn_Instances
@@ -68,24 +81,16 @@ class AgentActionDefn_Instances
 		(
 			"Defend",
 			targetTypes.Ally,
-			// select
-			(uwpe: UniverseWorldPlaceEntities) =>
-			{
-				throw new Error("todo - Defend");
-			},
-			null // childrenGet
+			AgentActionDefn.selectTargetable,
+			null // children
 		);
 
 		this.Fight = new AgentActionDefn
 		(
 			"Fight",
 			targetTypes.Enemy,
-			// select
-			(uwpe: UniverseWorldPlaceEntities) =>
-			{
-				throw new Error("todo - Fight");
-			},
-			null // childrenGet
+			AgentActionDefn.selectTargetable,
+			null // children
 		);
 
 		this.Item = new AgentActionDefn
@@ -95,27 +100,58 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo - Item");
+				var placeEncounter = uwpe.place as PlaceEncounter;
+				var agentActionDefn = placeEncounter.actionDefnSelected;
+				var partyPlayer = placeEncounter.partyPlayer;
+				var items = partyPlayer.items;
+				agentActionDefn.children = items.map
+				(
+					item => new AgentActionDefn
+					(
+						item.defnName,
+						null, // targetType
+						// select
+						(uwpe2: UniverseWorldPlaceEntities) =>
+						{
+							alert("todo - item - " + item.defnName);
+						},
+						null // children
+					)
+				);
+				var agentActing = placeEncounter.agentActing;
+				agentActing.actionDefnSelected = agentActionDefn;
 			},
-			(uwpe: UniverseWorldPlaceEntities) =>
-			{
-				throw new Error("todo - Item");
-			}
+			null // children
 		);
 
 		this.Magic = new AgentActionDefn
 		(
-			"Magic",
+			"Cast Spell",
 			null, // targetType
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo - Magic");
+				var placeEncounter = uwpe.place as PlaceEncounter;
+				var agentActing = placeEncounter.agentActing;
+				var agentActingDefn = agentActing.defn();
+				var agentActionDefn = agentActing.actionDefnSelected;
+				var spells = agentActingDefn.spellcasting.spellsKnown;
+				agentActionDefn.children = spells.map
+				(
+					spell => new AgentActionDefn
+					(
+						spell.name,
+						null, // targetType
+						(uwpe2: UniverseWorldPlaceEntities) => 
+						{
+							throw new Error("todo - spells - " + spell.name);
+						},
+						null // children
+					)
+				);
+				agentActing.actionDefnSelected = agentActionDefn;
 			},
-			(uwpe: UniverseWorldPlaceEntities) =>
-			{
-				throw new Error("todo - Magic");
-			}
+			null // children
 		);
 
 		this.Wait = new AgentActionDefn
@@ -127,7 +163,7 @@ class AgentActionDefn_Instances
 			{
 				throw new Error("todo - Wait");
 			},
-			null // childrenGet
+			null // children
 		);
 
 		this.Withdraw = new AgentActionDefn
@@ -137,9 +173,9 @@ class AgentActionDefn_Instances
 			// select
 			(uwpe: UniverseWorldPlaceEntities) =>
 			{
-				throw new Error("todo");
+				throw new Error("todo - Withdraw");
 			},
-			null // childrenGet
+			null // children
 		);
 
 	}

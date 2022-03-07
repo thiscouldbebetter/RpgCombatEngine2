@@ -4,6 +4,7 @@ class PlaceEncounter extends Place
 	partyPlayer: Party;
 	partyEnemy: Party;
 
+	actionDefnSelected: AgentActionDefn;
 	agentActing: Agent;
 
 	cursorActor: Cursor;
@@ -203,37 +204,36 @@ class PlaceEncounter extends Place
 			Coords.fromXY(205, 0), "Actions:"
 		);
 
+		var listActionsPlayerItems = DataBinding.fromContextAndGet
+		(
+			uwpe,
+			(c: UniverseWorldPlaceEntities) =>
+				(c.place as PlaceEncounter).agentActing.actionDefnsAvailable(uwpe)
+		);
+
+		var listActionsPlayerBindingForItemSelected = new DataBinding
+		(
+			uwpe,
+			c => (c.place as PlaceEncounter).actionDefnSelected,
+			(c, v) => (c.place as PlaceEncounter).actionDefnSelected = v
+		);
+
 		var listActionsPlayer = 
-			ControlList.fromPosSizeItemsAndBindingForItemText
+			ControlList.fromPosSizeItemsAndBindingsForItemTextAndSelected
 			(
 				Coords.fromXY(205, 15), // pos
 				listSize,
-				DataBinding.fromContextAndGet
-				(
-					uwpe,
-					(c: UniverseWorldPlaceEntities) =>
-						(c.place as PlaceEncounter).agentActing.actionDefnsAvailable(uwpe)
-				),
-				DataBinding.fromGet(x => x.name) // itemText
+				listActionsPlayerItems,
+				DataBinding.fromGet(x => x.name), // itemText
+				listActionsPlayerBindingForItemSelected
 			);
 
 		listActionsPlayer.confirm = () =>
 		{
-			var world = universe.world as WorldExtended;
-			var encounter = world.placeCurrent as PlaceEncounter;
-			var agent = encounter.agentActing;
 			var actionDefnToSelect =
 				listActionsPlayer.itemSelected() as AgentActionDefn;
-			agent.actionCurrent.defn = actionDefnToSelect;
-			var targetType = actionDefnToSelect.targetType;
-			if (targetType == null)
-			{
-				throw new Error("todo - targetType is null");
-			}
-			else
-			{
-				// todo
-			}
+
+			actionDefnToSelect.select(uwpe);
 		};
 
 		var labelParty = ControlLabel.fromPosAndTextString

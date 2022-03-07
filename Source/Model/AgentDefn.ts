@@ -6,6 +6,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 	size: Coords;
 	killable: Killable;
 	visual: VisualBase;
+	spellcasting: AgentSpellcasting;
 	actionDefnRoot: AgentActionDefn;
 
 	constructor
@@ -15,6 +16,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 		size: Coords,
 		killable: Killable,
 		visual: VisualBase,
+		spellcasting: AgentSpellcasting,
 		actionDefnRoot: AgentActionDefn
 	)
 	{
@@ -23,6 +25,7 @@ class AgentDefn implements EntityProperty<AgentDefn>
 		this.size = size;
 		this.killable = killable;
 		this.visual = visual;
+		this.spellcasting = spellcasting;
 		this.actionDefnRoot = actionDefnRoot;
 	}
 
@@ -62,13 +65,18 @@ class AgentDefn_Instances
 
 		var actionDefns = AgentActionDefn.Instances();
 
+		var spellcastingNone = new AgentSpellcasting
+		(
+			0, // energyMax
+			[] // spellsKnown
+		);
+
 		var actionRootCommon = new AgentActionDefn
 		(
 			"[root]",
 			null, // targetType
 			null, // select
 			// children
-			(uwpe: UniverseWorldPlaceEntities) =>
 			[
 				actionDefns.Fight,
 				actionDefns.Defend,
@@ -94,6 +102,7 @@ class AgentDefn_Instances
 				agentSizePlayer,
 				new VisualImageFromLibrary("Agents_Agents")
 			),
+			spellcastingNone,
 			actionRootCommon
 		);
 
@@ -113,6 +122,7 @@ class AgentDefn_Instances
 				agentSizePlayer,
 				new VisualImageFromLibrary("Agents_Agents")
 			),
+			spellcastingNone,
 			actionRootCommon
 		);
 
@@ -132,6 +142,7 @@ class AgentDefn_Instances
 				agentSizePlayer,
 				new VisualImageFromLibrary("Agents_Agents")
 			),
+			spellcastingNone,
 			actionRootCommon
 		);
 
@@ -151,6 +162,7 @@ class AgentDefn_Instances
 				agentSizePlayer,
 				new VisualImageFromLibrary("Agents_Agents")
 			),
+			spellcastingNone,
 			actionRootCommon
 		);
 
@@ -163,6 +175,7 @@ class AgentDefn_Instances
 			agentSizeMedium,
 			Killable.fromIntegrityMax(10),
 			new VisualImageFromLibrary("Agents_Goblin"),
+			spellcastingNone,
 			null // action
 		);
 
@@ -173,6 +186,7 @@ class AgentDefn_Instances
 			agentSizeLarge,
 			Killable.fromIntegrityMax(20),
 			new VisualImageFromLibrary("Agents_Troll"),
+			spellcastingNone,
 			null // action
 		);
 

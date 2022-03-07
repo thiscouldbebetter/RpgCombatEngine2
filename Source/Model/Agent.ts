@@ -37,7 +37,7 @@ class Agent extends Entity
 			this.actionDefnSelected = defn.actionDefnRoot;
 		}
 
-		var returnActionDefns = this.actionDefnSelected.children(uwpe);
+		var returnActionDefns = this.actionDefnSelected.children;
 
 		return returnActionDefns;
 	}
